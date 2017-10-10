@@ -1,0 +1,55 @@
+/* everyenvelope.css */
+
+/* Blue Color #009fb7 */
+/* Orange Color #ffa600 */
+/* Green Color #9bcb52 */
+/* font-family: proxima-nova,sans-serif */
+/* text color #798387 */
+/* gray color #f6f8f8 */
+/* white color #fff */
+
+body {
+    background-color: #f6f8f8;
+    color: #798387;
+    font-family: proxima-nova ,sans-serif;
+}
+
+.container {
+    margin-top: 2rem; 
+}
+
+.navbar-green {
+    background-color: #9bcb52;
+}
+
+.navbar-green a {
+    color: #fff; 
+}
+
+table thead {
+    border-radius: 2rem; 
+}
+
+.thead-blue {
+    background-color: #009fb7;
+    color: #fff; 
+    padding: 1rem;
+    
+}
+
+.thead-blue tr th {
+     
+}
+
+tbody {
+    background-color: #fff; 
+}
+
+.btn-orange {
+    background-color: #ffa600;
+    color: #fff; 
+}
+
+input: {
+    color: #798387;
+}

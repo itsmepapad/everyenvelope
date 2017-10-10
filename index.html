@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>everyenvelope</title>
+    
+    <!-- Bootstrap 4.0.0 Beta -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    
+    <!-- My Styles -->
+    <link rel="stylesheet" href="css/everyenvelope.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="navbar navbar-green">
+        <a class="navbar-brand" href="#">
+            <img src="" width="30" height="30" class="" alt="">
+            every<strong>envelope</strong>
+        </a>
+    </header>
+      
+    <section class="container">
+        <div class="row">
+            <div class="col-10 m-auto">
+                <form>
+                    <table class="table table-hover" id="main-table">
+                        <thead class="thead-blue">
+                            <tr>
+                                <th>#</th>
+                                <th>Budget Item</th>
+                                <th>Budget Amount</th>
+                                <th>$100s</th>
+                                <th>$20s</th>
+                                <th>$5s</th>
+                                <th>$1s</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td id="id-1">1</td>
+                                <td>
+                                    <input type="text" id="budgetItem-1" class="form-control">
+                                </td>
+                                <td>
+                                    <input type="text" id="budgetAmount-1" class="form-control">
+                                </td>
+                                <td id="hundredTotal-1">0</td>
+                                <td id="twentyTotal-1">0</td>
+                                <td id="fiveTotal-1">0</td>
+                                <td id="oneTotal-1">0</td>
+                            </tr>
+                        </tbody>
+                        <thead class="thead-blue">
+                            <tr>
+                                <td id=""></td>
+                                <td>Total</td>
+                                <td id="budgetAmount-sum">0</td>
+                                <td id="hundredTotal-sum">0</td>
+                                <td id="twentyTotal-sum">0</td>
+                                <td id="fiveTotal-sum">0</td>
+                                <td id="oneTotal-sum">0</td>
+                            </tr>
+                        </thead>
+                    </table>
+                    <button type="button" class="btn btn-orange" role="button" id="addRow">Add Row</button>
+                    <button type="button" class="btn btn-orange float-right" role="button" id="calculate">Calculate</button>
+                </form>
+            </div>
+        </div>
+    </section>
+    
+    <script type="text/javascript" src="everyenvelope.js"></script>
+</body>
+</html>
