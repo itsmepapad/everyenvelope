@@ -1,54 +1,58 @@
 /* everyenvelope.js */
 
-var x = 1;
-var table = document.getElementById("main-table");
+/*** VARIABLES ***/
 
-//var placeholders = ["Fundraiser", "Oil Change", "Haircut", "Tips", "Savings", "Groceries", "Tooth Fairy"];
+var x = 1; // Number of rows in table.
+
+var table = document.getElementById("main-table"); // Grab table to manipulate. 
+
+/*** FUNCTIONS ***/
 
 function calculateEnvelopes() {
     
-    // Total Sum Amounts
+    // Set sum amounts to zero: 
     var budgetAmountSum = 0; 
     var hundredTotalSum = 0; 
     var twentyTotalSum = 0; 
     var fiveTotalSum = 0; 
     var oneTotalSum = 0; 
     
+    // Calculate new sums for each row in table: 
     for(var i=1; i<=x; i++) {
         
-        //Get inputs
+        // Retreive the budget amount and add to total:
         var budgetAmount = document.getElementById("budgetAmount-" + i).value;
         budgetAmountSum += budgetAmount*1; 
     
-        //Quick validation
+        // If budget amount is empty, throw error message and stop calculation: 
         if(budgetAmount === "") {
             window.alert("Please complete all fields before trying to calculate."); 
-            return; //This will prevent the function from continuing
+            return;
         }
         
-        //hundredTotal
-        var hundredTotal = Math.floor(budgetAmount / 100); 
+        // If value is divisible by hundreds, increment hundredTotal
+        var hundredTotal = Math.floor(budgetAmount / 100);
         document.getElementById("hundredTotal-" + i).innerHTML = hundredTotal;
         hundredTotalSum += hundredTotal; 
 
-        //twentyTotal
+        // twentyTotal
         var twentyTotal = Math.floor( ( budgetAmount%100 ) / 20); 
         document.getElementById("twentyTotal-" + i).innerHTML = twentyTotal;
         twentyTotalSum += twentyTotal; 
 
-        //fiveTotal
+        // fiveTotal
         var fiveTotal = Math.floor( ( budgetAmount%20 ) / 5); 
         document.getElementById("fiveTotal-" + i).innerHTML = fiveTotal;
         fiveTotalSum += fiveTotal; 
 
-        //oneTotal
+        // oneTotal
         var oneTotal = Math.floor( ( budgetAmount%5) / 1); 
         document.getElementById("oneTotal-" + i).innerHTML = oneTotal; 
         oneTotalSum += oneTotal; 
         
     }
     
-    //Populate Total Sums
+    // Populate new amounts
     document.getElementById("budgetAmount-sum").innerHTML = budgetAmountSum; 
     document.getElementById("hundredTotal-sum").innerHTML = hundredTotalSum; 
     document.getElementById("twentyTotal-sum").innerHTML = twentyTotalSum; 
@@ -58,14 +62,15 @@ function calculateEnvelopes() {
     
 }
 
-function addRow() {
+function addAnotherRow() {
     
+    // Increment row count:
     x += 1; 
 
-    // Create an empty <tr> element and add it to the 1st position of the table:
+    // Create an empty <tr> element and add it to the end of the table body:
     var row = document.getElementsByTagName('tbody')[0].insertRow(table.rows.length-2);
 
-    // Insert new cells (<td> elements) at the 1st and 2nd position of the "new" <tr> element:
+    // Insert new cells (<td> elements) at the 1st through 8th position of the "new" <tr> element:
     var id = row.insertCell(0);
     var item = row.insertCell(1);
     var amount = row.insertCell(2);
@@ -75,7 +80,7 @@ function addRow() {
     var one = row.insertCell(6);
     var remove = row.insertCell(7);
 
-    // Add some cells contents:
+    // Add content to the new cells:
     id.innerHTML = x;
     item.innerHTML = '<input type="text" class="form-control">';
     amount.innerHTML = '<input type="text" class="form-control">';
@@ -85,7 +90,7 @@ function addRow() {
     one.innerHTML = "0";
     remove.innerHTML = '<button type="button" class="btn btn-orange" role="button" onclick="removeRow(this.parentElement.id)">Delete</button>'
      
-    //Give cell ids
+    // Give each of the cells unique ids: 
     id.id = "id-"+x; 
     item.firstChild.id = "budgetItem-"+x; 
     amount.firstChild.id = "budgetAmount-"+x;
@@ -94,23 +99,29 @@ function addRow() {
     five.id = "fiveTotal-"+x; 
     one.id = "oneTotal-"+x; 
     remove.id = "remove-"+x; 
+    
+    // Add placeholders to item and amount input fields:
+    var placeholders = ["Fundraiser", "Oil Change", "Haircut", "Tips", "Savings", "Groceries", "Tooth Fairy"];
+    item.firstChild.placeholder = "i.e. " + placeholders[Math.floor(Math.random()*placeholders.length)];
+    amount.firstChild.placeholder = "i.e. " + Math.floor(Math.random()*99);
      
 }
 
 function removeRow(parentid) {
+    
+    // Determine which row should be removed:
     var index = Number(parentid.split("-").pop());
-    //var htmlindex = userindex + 1; 
-    console.log("remove row " + index);
+
+    // Delete row: 
     table.deleteRow(index);
     
-    //for each row after, update ids to fall in line with sequence
-    
+    // For each row after deleted row, update row number and ids to fall in sequence:
     for(var i = index; i<table.rows.length-1; i++){
         
-        //update row number
+        // Update row number:
         table.rows[i].cells[0].innerHTML = i;
         
-        //update cell ids
+        // Update cell ids:
         table.rows[i].cells[0].id = "id-"+i;
         table.rows[i].cells[1].firstChild.id = "budgetItem-"+i;
         table.rows[i].cells[2].firstChild.id = "budgetAmount-"+i;
@@ -121,67 +132,8 @@ function removeRow(parentid) {
         table.rows[i].cells[7].id = "remove-"+i;
     };
     
+    // Decrement number of rows in table: 
     x-=1;
         
-        
-    
 }
-    
-
-//Clicking the button calls our function
-document.getElementById("calculate").onclick = function() { calculateEnvelopes(); };
-document.getElementById("addRow").onclick = function() { addRow(); };
-
-
-
-
-//Trying to figure out how to delete row...
-
-//https://www.youtube.com/watch?v=EVurqKfHSH8
-
-//var table = document.getElementById("main-table");
-//for(var i = 2; i < x+1; i++)
-//    {
-//          eachid = "remove-"+i;
-//        
-//          document.getElementById("remove-1").onclick = function() 
-//          { 
-//              removeRow(this.parentElement.rowIndex-1); 
-//          };
-//        
-////        table.rows[i].cells[7].onclick = function()
-////        {
-////            index = this.parentElement.rowIndex; 
-////            console.log(index);
-////        };
-//    };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
