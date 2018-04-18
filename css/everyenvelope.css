@@ -26,6 +26,10 @@ body {
     color: #fff; 
 }
 
+table {
+    margin-top: 20px;
+}
+
 table thead {
     border-radius: 2rem; 
 }
