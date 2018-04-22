@@ -2,9 +2,39 @@
 
 /*** VARIABLES ***/
 
-var x = 1; // Number of rows in table.
+var table; // The table we will manipulate.
+var entries; // Number of rows (budget items) in table.
+var keyword; // Word provided by user to identify data.
+var database; // The database we will store and retrieve data. 
+var ref; // The location in the database we will edit. 
 
-var table = document.getElementById("main-table"); // Grab table to manipulate. 
+var object; // The database object
+
+/*** INITIALIZE ***/
+
+function setup() {
+    
+    // Initialise variables:
+    entries = 1;
+    table = document.getElementById("main-table");
+    
+    // Initialize firebase:
+    var config = {
+        apiKey: "AIzaSyBygY4bRDRXyqmt_VYRW1oT5URThZOfQeU",
+        authDomain: "everyenvelope.firebaseapp.com",
+        databaseURL: "https://everyenvelope.firebaseio.com",
+        projectId: "everyenvelope",
+        storageBucket: "",
+        messagingSenderId: "813966675035"
+    };
+    firebase.initializeApp(config);
+    
+    // Initiaise database and node:
+    database = firebase.database();
+    ref = database.ref('budgetitems');
+     
+}
+
 
 /*** FUNCTIONS ***/
 
@@ -18,7 +48,7 @@ function calculateEnvelopes() {
     var oneTotalSum = 0; 
     
     // Calculate new sums for each row in table: 
-    for(var i=1; i<=x; i++) {
+    for(var i=1; i<=entries; i++) {
         
         // Retreive the budget amount and add to total:
         var budgetAmount = document.getElementById("budgetAmount-" + i).value;
@@ -26,7 +56,7 @@ function calculateEnvelopes() {
     
         // If budget amount is empty, throw error message and stop calculation: 
         if(budgetAmount === "") {
-            window.alert("Please complete all fields before trying to calculate."); 
+            window.alert("Do us a favor, and delete any rows that do not have budget amounts."); 
             return;
         }
         
@@ -65,7 +95,7 @@ function calculateEnvelopes() {
 function addAnotherRow() {
     
     // Increment row count:
-    x += 1; 
+    entries += 1; 
 
     // Create an empty <tr> element and add it to the end of the table body:
     var row = document.getElementsByTagName('tbody')[0].insertRow(table.rows.length-2);
@@ -81,24 +111,24 @@ function addAnotherRow() {
     var remove = row.insertCell(7);
 
     // Add content to the new cells:
-    id.innerHTML = x;
+    id.innerHTML = entries;
     item.innerHTML = '<input type="text" class="form-control">';
     amount.innerHTML = '<input type="text" class="form-control">';
     hundred.innerHTML = "0";
     twenty.innerHTML = "0";
     five.innerHTML = "0";
     one.innerHTML = "0";
-    remove.innerHTML = '<button type="button" class="btn btn-orange" role="button" onclick="removeRow(this.parentElement.id)">Delete</button>'
+    remove.innerHTML = '<button type="button" class="btn btn-white float-right" role="button" onclick="removeRow(this.parentElement.id)">Delete</button>'
      
     // Give each of the cells unique ids: 
-    id.id = "id-"+x; 
-    item.firstChild.id = "budgetItem-"+x; 
-    amount.firstChild.id = "budgetAmount-"+x;
-    hundred.id = "hundredTotal-"+x; 
-    twenty.id = "twentyTotal-"+x; 
-    five.id = "fiveTotal-"+x; 
-    one.id = "oneTotal-"+x; 
-    remove.id = "remove-"+x; 
+    id.id = "id-"+entries; 
+    item.firstChild.id = "budgetItem-"+entries; 
+    amount.firstChild.id = "budgetAmount-"+entries;
+    hundred.id = "hundredTotal-"+entries; 
+    twenty.id = "twentyTotal-"+entries; 
+    five.id = "fiveTotal-"+entries; 
+    one.id = "oneTotal-"+entries; 
+    remove.id = "remove-"+entries; 
     
     // Add placeholders to item and amount input fields:
     var placeholders = ["Fundraiser", "Oil Change", "Haircut", "Tips", "Savings", "Groceries", "Tooth Fairy"];
@@ -133,7 +163,136 @@ function removeRow(parentid) {
     };
     
     // Decrement number of rows in table: 
-    x-=1;
+    entries-=1;
         
 }
+
+function storeData() {
+    
+    // Initialize variables: 
+    var items = []; // An array of budgetNames and Items.
+    var itemsName; // The budget name of an item. 
+    var itemsValue; // The budget value of an item. 
+
+    // Get keyword: 
+    keyword = document.getElementById("storeKeyword").value;
+    
+    // Create as array of all budget items: 
+    for (var i = 1; i<table.rows.length-1; i++){
+        
+        // Get item names and values: 
+        itemsName = document.getElementById("budgetItem-" + i).value;
+        itemsValue = document.getElementById("budgetAmount-" + i).value;
+        
+        // Append an array of the name and value to the items array: 
+        items.push([itemsName, itemsValue]);       
+    };
+    
+    // Create object to store all data:
+    var data = {
+        keyword: keyword,
+        items: items
+    };
+    
+    // Push data object to console and database: 
+    ref.push(data);
+    console.log("We stored that data!");
+}
+
+function loadData() {
+    
+    // Look at DB, if data return it, if error return it:
+    ref.on('value', returnData, returnErr);
+    
+}
+
+function returnData(data) {
+    
+    // Get the data values: 
+    var budgetitems = data.val();
+    
+    // Grab the list of keys for each record:
+    var keys = Object.keys(budgetitems);
+    
+    // Get user's passphrase to compare: 
+    keyword = document.getElementById("loadKeyword").value;
+    
+    // Check each record for matching keywords:
+    for(var i = 0; i < keys.length; i++)
+        {
+            // Iterate through the keys:
+            var k = keys[i]; 
+            
+            // Grab the keyword cooresponding to each key:
+            var storedkeyword = budgetitems[k].keyword;
+            
+            // If the keyword matches, display that keys data to the user: 
+            if (storedkeyword == keyword) {
+                displayData(budgetitems[k].items);
+                return;
+            }
+        }   
+    
+    // Alert no matching data: 
+    window.alert("Unfortunately, we were unable to find any matching passphrases. You are welcome to try another! :)"); 
+}
+
+function returnErr(err) {
+    
+    // Alert user there was an error:
+    window.alert("Let the everyenvelope team no you got an error! Send them a screenshot of this: " + err); 
+}
+
+function displayData(dataarray) {
+    
+    // Grab current number of rows: 
+    var curNumOfRows = entries; 
+    
+    // Delete all current rows
+    for(var i = curNumOfRows; i > 0; i--) {
+        console.log(curNumOfRows, entries, i, "row removed");
+        removeRow("id-"+i);
+    }
+    
+    // Add rows to show the show the data in the UI: 
+    for(var i = 0; i < dataarray.length; i++){
+        addAnotherRow();
+    }
+    
+    // Populate each of the elements with data: 
+    for(var i = 0; i < dataarray.length; i++){
+        console.log(dataarray[i]);
+        document.getElementById("budgetItem-" + (i+1)).value = dataarray[i][0];
+        document.getElementById("budgetAmount-" + (i+1)).value = dataarray[i][1];
+    }
+    
+    // Go ahead and calculate for the user: 
+    calculateEnvelopes();
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

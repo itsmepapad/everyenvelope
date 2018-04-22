@@ -5,6 +5,7 @@
     orange:         #ffa600
     green:          #9bcb52
     gray:           #f6f8f8
+    purple:         #b34fa0
     white:          #fff
     text:           #798387
     font-family:    proxima-nova, sans-serif
@@ -19,7 +20,7 @@ body {
 }
 
 .container {
-    margin-top: 1.5rem; 
+    margin-top: 1rem; 
 }
 
 
@@ -36,7 +37,7 @@ body {
 
 /******** TABLE ********/
 table {
-    margin-top: 1.5rem;
+    margin-top: 1rem;
 }
 
 .thead-blue {
@@ -52,5 +53,15 @@ tbody {
 /******** BUTTONS ********/
 .btn-orange {
     background-color: #ffa600;
+    color: #fff; 
+}
+
+.btn-white {
+    background-color: #fff;
+    color: #009fb7;
+}
+
+.btn-purple {
+    background-color: #b34fa0;
     color: #fff; 
 }
