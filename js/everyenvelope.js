@@ -364,9 +364,15 @@ function makeResponsive(size) {
     
     if (size.matches) { // If media query matches
         tableElement.className = "table-responsive-lg table-sm";
+        document.getElementById("addRowDefault").innerHTML = "X";
+        document.getElementById("calculateDefault").innerHTML = "X";
     } else {
         tableElement.className = "table-responsive-lg";
+        document.getElementById("addRowDefault").innerHTML = "Add Row";
+        document.getElementById("calculateDefault").innerHTML = "Calculate";
     }
+    
+
 }
 
 

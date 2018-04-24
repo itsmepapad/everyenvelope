@@ -110,7 +110,7 @@ th {
 
 /******** MEDIA QUERIES ********/
 @media (max-width: 767.98px) {
-    .btn, .form-control, td, th {
+    .btn, .form-control, td, th, p {
         padding: .15rem .4rem;
         margin: .1rem .1rem; 
         font-size: .875rem;
@@ -141,10 +141,6 @@ th {
         margin-bottom: 0;
     }
     
-    p {
-        font-size: .8rem; 
-    }
-    
     h5 {
         font-size: 1rem; 
     }
@@ -154,6 +150,14 @@ th {
     
     #addRowSmall, #loadDataSmall, #storeDataSmall, #calculateSmall {
         display: none; 
+    }
+    
+    #budgetItemHead {
+        min-width: 11.5rem; 
+    }
+    
+    #budgetAmountHead {
+        min-width: 6rem; 
     }
     
 }

@@ -36,7 +36,7 @@
     <!-- Content -->
     <section class="container-fluid">
         <div class="row">
-            <div class="col-11 m-auto">
+            <div class="col-12 m-auto">
                 <form>
                     
                     <!-- Load Data Button -->
@@ -53,8 +53,8 @@
                        <thead class="thead-blue">
                             <tr class="form">
                                 <th>#</th>
-                                <th>Budget Item</th>
-                                <th>Budget Amount</th>
+                                <th id="budgetItemHead">Budget Item</th>
+                                <th id="budgetAmountHead">Amount</th>
                                 <th>
                                     <!-- $100s Button -->
                                     <button type="button" class="btn btn-blue" role="button" id="hundredhead" onclick="flipCalcDenom(this.id);"><strong>$100s</strong></button>
@@ -126,7 +126,7 @@
 
                 <!-- Modal -->
                 <div class="modal fade" id="loadDataModal" tabindex="-1" role="dialog" aria-labelledby="loadModalLabel" aria-hidden="true">
-                  <div class="modal-dialog" role="document">
+                  <div class="modal-dialog modal-sm" role="document">
                     <div class="modal-content">
                       <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">Load Your Data Here!</h5>
