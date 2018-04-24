@@ -42,7 +42,11 @@ function setup() {
     // Initiaise database and node:
     database = firebase.database();
     ref = database.ref('budgetitems');
-     
+    
+    // Adjust to responsive design:
+    var size = window.matchMedia("(max-width: 767.98px)")
+    makeResponsive(size); // Call listener function at run time
+    size.addListener(makeResponsive) // Attach listener function on state changes     
 }
 
 
@@ -145,7 +149,7 @@ function addAnotherRow() {
     twenty.innerHTML = "0";
     five.innerHTML = "0";
     one.innerHTML = "0";
-    remove.innerHTML = '<button type="button" class="btn btn-white float-right" role="button" onclick="removeRow(this.parentElement.id)">Delete</button>'
+    remove.innerHTML = '<button type="button" class="btn btn-white" role="button" onclick="removeRow(this.parentElement.id)">Delete</button>'
      
     // Give each of the cells unique ids: 
     id.id = "id-"+entries; 
@@ -354,7 +358,16 @@ function flipCalcDenom(id) {
     
 }
 
-
+function makeResponsive(size) {
+    
+    var tableElement = document.getElementById("responsiveTable"); 
+    
+    if (size.matches) { // If media query matches
+        tableElement.className = "table-responsive-lg table-sm";
+    } else {
+        tableElement.className = "table-responsive-lg";
+    }
+}
 
 
 

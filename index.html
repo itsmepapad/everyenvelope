@@ -34,17 +34,24 @@
     </header>
 
     <!-- Content -->
-    <section class="container">
+    <section class="container-fluid">
         <div class="row">
-            <div class="col-10 m-auto">
+            <div class="col-11 m-auto">
                 <form>
                     
+                    <!-- Load Data Button -->
+                    <button id="loadDataSmall" type="button" class="btn btn-purple float-left" data-toggle="modal" data-target="#loadDataModal">Load Data</button>
+                    
+                    <!-- Add Row Button -->
+                    <button type="button" class="btn btn-orange float-right" role="button" id="addRowSmall" onclick="addAnotherRow();">Add Row</button>
+                    
                     <!-- Table -->
-                    <table class="table table-hover" id="main-table">
+                    <div id="responsiveTable" class="table-responsive-lg">
+                        <table class="table table-hover table-condensed" id="main-table">
                         
                        <!-- Table Header -->    
                        <thead class="thead-blue">
-                            <tr>
+                            <tr class="form">
                                 <th>#</th>
                                 <th>Budget Item</th>
                                 <th>Budget Amount</th>
@@ -62,11 +69,11 @@
                                 </th>
                                 <th>
                                     <!-- $1s Button -->
-                                    <button type="button" class="btn btn-blue" role="button" id="onehead" onclick="flipCalcDenom(this.id);"><strong>$1s</strong></button>                           
+                                    <button type="button" class="btn btn-blue btn-blue-fake" role="button" id="onehead" onclick="flipCalcDenom(this.id);"><strong>$1s</strong></button>                           
                                 </th>
                                 <th>                    
                                     <!-- Add Row Button -->
-                                    <button type="button" class="btn btn-orange float-right" role="button" id="addRow" onclick="addAnotherRow();">Add Row</button>
+                                    <button type="button" class="btn btn-orange" role="button" id="addRowDefault" onclick="addAnotherRow();">Add Row</button>
                                 </th>
                             </tr>
                         </thead>
@@ -86,90 +93,95 @@
                                 <td id="fiveTotal-1">0</td>
                                 <td id="oneTotal-1">0</td>
                                 <td id="remove-1">
-                                    <button type="button" class="btn btn-white float-right" role="button" onclick="removeRow(this.parentElement.id)">Delete</button>
+                                    <button type="button" class="btn btn-white" role="button" onclick="removeRow(this.parentElement.id)">Delete</button>
                                 </td>
                             </tr>
                         </tbody>
                         
                         <!-- Table Footer -->
                         <tfoot class="thead-blue">
-                            <tr>
-                                <td id=""></td>
-                                <td>Total</td>
-                                <td id="budgetAmount-sum">0</td>
+                            <tr >
+                                <th></th>
+                                <th><strong>Total</strong></th>
+                                <th id="budgetAmount-sum">0</th>
                                 <td id="hundredTotal-sum">0</td>
                                 <td id="twentyTotal-sum">0</td>
                                 <td id="fiveTotal-sum">0</td>
                                 <td id="oneTotal-sum">0</td>
                                 <td>
                                     <!-- Calculate Button -->
-                                    <button type="button" class="btn btn-orange float-right" role="button" id="calculate" onclick="calculateEnvelopes();">Calculate</button>
+                                    <button type="button" class="btn btn-orange" role="button" id="calculateDefault" onclick="calculateEnvelopes();">Calculate</button>
                                 </td>
                             </tr>
                         </tfoot>
                     </table>
+                    </div>
                 </form>                        
                         
 
         <!-------------- Load Data Modal -------------->
                        
-                        <!-- Button -->
-                        <button type="button" class="btn btn-purple" data-toggle="modal" data-target="#loadDataModal">Load Data</button>
-                        
-                        <!-- Modal -->
-                        <div class="modal fade" id="loadDataModal" tabindex="-1" role="dialog" aria-labelledby="loadModalLabel" aria-hidden="true">
-                          <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                              <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Load Your Data Here!</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                  <span aria-hidden="true">&times;</span>
-                                </button>
-                              </div>
-                              <div class="modal-body">
-                                  <p>If you have saved data with us before <strong>and</strong> you have your passphrase handy, enter it below and select 'Load' to restore your data.
-                                  <hr>
-                                  <input type="text" id="loadKeyword" class="form-control" placeholder="Enter your passphrase here...">
-                              </div>
-                              <div class="modal-footer">
-                                <p></p>
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-orange" role="button" onclick="loadData();" data-dismiss="modal">Load</button>
-                              </div>
-                            </div>
-                          </div>
-                        </div>               
+                <!-- Load Data Button -->
+                <button id="loadDataDefault" type="button" class="btn btn-purple float-left" data-toggle="modal" data-target="#loadDataModal">Load Data</button>
+
+                <!-- Modal -->
+                <div class="modal fade" id="loadDataModal" tabindex="-1" role="dialog" aria-labelledby="loadModalLabel" aria-hidden="true">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Load Your Data Here!</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                          <p>If you have saved data with us before <strong>and</strong> you have your passphrase handy, enter it below and select 'Load' to restore your data.
+                          <hr>
+                          <input type="text" id="loadKeyword" class="form-control" placeholder="Enter your passphrase here...">
+                      </div>
+                      <div class="modal-footer">
+                        <p></p>
+                        <button type="button" class="btn btn-close" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-orange" role="button" onclick="loadData();" data-dismiss="modal">Load</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>               
                                
         <!-------------- Store Data Modal -------------->
                         
-                        <!-- Button -->
-                        <button type="button" class="btn btn-purple float-right" data-toggle="modal" data-target="#storeDataModal">Store Data</button>
-                        
-                        <!-- Modal -->
-                        <div class="modal fade" id="storeDataModal" tabindex="-1" role="dialog" aria-labelledby="storeModalLabel" aria-hidden="true">
-                          <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                              <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Store Your Data Here!</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                  <span aria-hidden="true">&times;</span>
-                                </button>
-                              </div>
-                              <div class="modal-body">
-                                  <p>If you would like us to save the data you entered for a later date, enter a passphrase below and select 'Save'. <strong>Keep this passphrase handy!</strong> You will need it to load your data next time.</p>
-                                  <hr>
-                                  <input type="text" id="storeKeyword" class="form-control" placeholder="Enter your passphrase here...">
-                              </div>
-                              <div class="modal-footer">
-                                <p></p>
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-orange" role="button" onclick="storeData();" data-dismiss="modal">Save</button>
-                              </div>
-                            </div>
+                <!-- Store Data Button -->
+                <button id="storeDataSmall" type="button" class="btn btn-purple float-left" data-toggle="modal" data-target="#storeDataModal">Store Data</button>
+
+                <!-- Store Data Button -->
+                <button id="storeDataDefault" type="button" class="btn btn-purple float-right" data-toggle="modal" data-target="#storeDataModal">Store Data</button>
+
+                <!-- Store Data Modal -->
+                <div class="modal fade" id="storeDataModal" tabindex="-1" role="dialog" aria-labelledby="storeModalLabel" aria-hidden="true">
+                      <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Store Your Data Here!</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <div class="modal-body">
+                              <p>If you would like us to save the data you entered for a later date, enter a passphrase below and select 'Save'. <strong>Keep this passphrase handy!</strong> You will need it to load your data next time.</p>
+                              <hr>
+                              <input type="text" id="storeKeyword" class="form-control" placeholder="Enter your passphrase here...">
+                          </div>
+                          <div class="modal-footer">
+                            <p></p>
+                            <button type="button" class="btn btn-close" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-orange" role="button" onclick="storeData();" data-dismiss="modal">Save</button>
                           </div>
                         </div>
+                      </div>
+                    </div>
                         
-
+                <!-- Calculate Button -->
+                <button type="button" class="btn btn-orange float-right" role="button" id="calculateSmall" onclick="calculateEnvelopes();">Calculate</button>
 
             </div>
         </div>
