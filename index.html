@@ -48,10 +48,22 @@
                                 <th>#</th>
                                 <th>Budget Item</th>
                                 <th>Budget Amount</th>
-                                <th>$100s</th>
-                                <th>$20s</th>
-                                <th>$5s</th>
-                                <th>$1s</th>
+                                <th>
+                                    <!-- $100s Button -->
+                                    <button type="button" class="btn btn-blue" role="button" id="hundredhead" onclick="flipCalcDenom(this.id);"><strong>$100s</strong></button>
+                                </th>
+                                <th>
+                                    <!-- $20s Button -->
+                                    <button type="button" class="btn btn-blue" role="button" id="twentyhead" onclick="flipCalcDenom(this.id);"><strong>$20s</strong></button>                             
+                                </th>
+                                <th>
+                                    <!-- $5s Button -->
+                                    <button type="button" class="btn btn-blue" role="button" id="fivehead" onclick="flipCalcDenom(this.id);"><strong>$5s</strong></button>
+                                </th>
+                                <th>
+                                    <!-- $1s Button -->
+                                    <button type="button" class="btn btn-blue" role="button" id="onehead" onclick="flipCalcDenom(this.id);"><strong>$1s</strong></button>                           
+                                </th>
                                 <th>                    
                                     <!-- Add Row Button -->
                                     <button type="button" class="btn btn-orange float-right" role="button" id="addRow" onclick="addAnotherRow();">Add Row</button>

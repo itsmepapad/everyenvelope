@@ -7,6 +7,7 @@
     gray:           #f6f8f8
     purple:         #b34fa0
     white:          #fff
+    red:            #e64b40
     text:           #798387
     font-family:    proxima-nova, sans-serif
 ********************************************/
@@ -64,4 +65,16 @@ tbody {
 .btn-purple {
     background-color: #b34fa0;
     color: #fff; 
+}
+
+.btn-blue {
+    background-color: #009fb7;
+    border-color: #fff;
+    color: #fff;
+}
+
+.btn-off {
+    background-color: #fff;
+    border-color: #e64b40;
+    color: #e64b40;
 }

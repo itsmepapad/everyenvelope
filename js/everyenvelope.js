@@ -7,8 +7,13 @@ var entries; // Number of rows (budget items) in table.
 var keyword; // Word provided by user to identify data.
 var database; // The database we will store and retrieve data. 
 var ref; // The location in the database we will edit. 
-
 var object; // The database object
+
+// Boolean variables used to determine if the calculator should include that denomination. 
+var calchundred;
+var calctwenty;
+var calcfive;
+var calcone; 
 
 /*** INITIALIZE ***/
 
@@ -17,6 +22,11 @@ function setup() {
     // Initialise variables:
     entries = 1;
     table = document.getElementById("main-table");
+    
+    calchundred = true;
+    calctwenty = true;
+    calcfive = true;
+    calcone = true;
     
     // Initialize firebase:
     var config = {
@@ -62,23 +72,40 @@ function calculateEnvelopes() {
         
         // If value is divisible by hundreds, increment hundredTotal
         var hundredTotal = Math.floor(budgetAmount / 100);
-        document.getElementById("hundredTotal-" + i).innerHTML = hundredTotal;
-        hundredTotalSum += hundredTotal; 
+        hundredTotalSum += hundredTotal;
 
         // twentyTotal
-        var twentyTotal = Math.floor( ( budgetAmount%100 ) / 20); 
-        document.getElementById("twentyTotal-" + i).innerHTML = twentyTotal;
+        var twentyTotal = Math.floor( ( budgetAmount % 100 ) / 20);
+        if (!calchundred) {
+            twentyTotal += hundredTotal * 5;
+            hundredTotal = 0;
+            hundredTotalSum = 0;
+        }
         twentyTotalSum += twentyTotal; 
 
         // fiveTotal
-        var fiveTotal = Math.floor( ( budgetAmount%20 ) / 5); 
-        document.getElementById("fiveTotal-" + i).innerHTML = fiveTotal;
+        var fiveTotal = Math.floor( ( budgetAmount % 20 ) / 5);
+        if (!calctwenty) {
+            fiveTotal += twentyTotal * 4;
+            twentyTotal = 0;
+            twentyTotalSum = 0;
+        }
         fiveTotalSum += fiveTotal; 
 
         // oneTotal
-        var oneTotal = Math.floor( ( budgetAmount%5) / 1); 
-        document.getElementById("oneTotal-" + i).innerHTML = oneTotal; 
+        var oneTotal = Math.floor( ( budgetAmount % 5) / 1);
+        if (!calcfive) {
+            oneTotal += fiveTotal * 5;
+            fiveTotal = 0;
+            fiveTotalSum = 0;
+        }
         oneTotalSum += oneTotal; 
+        
+        // Populate amounts: 
+        document.getElementById("hundredTotal-" + i).innerHTML = hundredTotal;
+        document.getElementById("twentyTotal-" + i).innerHTML = twentyTotal;
+        document.getElementById("fiveTotal-" + i).innerHTML = fiveTotal;
+        document.getElementById("oneTotal-" + i).innerHTML = oneTotal; 
         
     }
     
@@ -269,6 +296,65 @@ function displayData(dataarray) {
     // Go ahead and calculate for the user: 
     calculateEnvelopes();
 }
+
+function flipCalcDenom(id) {
+    
+    var calcElement = document.getElementById(id);
+    
+    // If id is hundredhead:
+    if(id == "hundredhead") {
+        
+        // If calchundred is true
+        if (calchundred) {
+            calchundred = false;
+            calcElement.className = "btn btn-off";
+        }
+        else {
+            calchundred = true; 
+            calcElement.className = "btn btn-blue";
+        }
+        
+    }
+
+    // If id is twentyhead:
+    else if(id == "twentyhead") {
+        
+        // If calctwenty is true
+        if (calctwenty) {
+            calctwenty = false;
+            calcElement.className = "btn btn-off";
+        }
+        else {
+            calctwenty = true; 
+            calcElement.className = "btn btn-blue";
+        }
+        
+    }
+    
+    // If id is fivehead:
+    else if(id == "fivehead") {
+        
+        // If calctwenty is true
+        if (calcfive) {
+            calcfive = false;
+            calcElement.className = "btn btn-off";
+        }
+        else {
+            calcfive = true; 
+            calcElement.className = "btn btn-blue";
+        }
+        
+    }
+    
+    // If id is onehead:
+    else {
+        // Alert user that 1's are required:
+        window.alert("Hey friend! Because we want to give you the most accurate numbers, we require that calculating by '$1s' always be turned on."); 
+    }    
+    
+}
+
+
 
 
 
