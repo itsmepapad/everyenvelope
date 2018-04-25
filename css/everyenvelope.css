@@ -71,6 +71,10 @@ th {
     margin: auto;
 }
 
+.btn-modal {
+    margin: .5rem;
+}
+
 .btn-orange {
     background-color: #ffa600;
     color: #fff; 
@@ -84,7 +88,7 @@ th {
 .btn-purple {
     background-color: #b34fa0;
     color: #fff; 
-    margin: 0 1rem;
+    margin: 0 1rem 1rem;
 }
 
 .btn-blue {
@@ -117,8 +121,12 @@ th {
         line-height: 1.5;
     }
     
-    td > .form-control {
-        width: 7rem;
+    #budgetItemHead {
+        min-width: 7rem; 
+    }
+    
+    #budgetAmountHead {
+        min-width: 3.5rem; 
     }
     
     #loadDataDefault, #storeDataDefault {
@@ -153,11 +161,11 @@ th {
     }
     
     #budgetItemHead {
-        min-width: 11.5rem; 
+        min-width: 10rem; 
     }
     
     #budgetAmountHead {
-        min-width: 6rem; 
+        min-width: 5rem; 
     }
     
 }

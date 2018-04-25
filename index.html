@@ -37,8 +37,12 @@
     <section class="container-fluid">
         <div class="row">
             <div class="col-12 m-auto">
+               
+            <div id="alertPlaceholder">
+                
+            </div>
+                                              
                 <form>
-                    
                     <!-- Load Data Button -->
                     <button id="loadDataSmall" type="button" class="btn btn-purple float-left" data-toggle="modal" data-target="#loadDataModal">Load Data</button>
                     
@@ -126,7 +130,7 @@
 
                 <!-- Modal -->
                 <div class="modal fade" id="loadDataModal" tabindex="-1" role="dialog" aria-labelledby="loadModalLabel" aria-hidden="true">
-                  <div class="modal-dialog modal-sm" role="document">
+                  <div class="modal-dialog" role="document">
                     <div class="modal-content">
                       <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">Load Your Data Here!</h5>
@@ -141,8 +145,8 @@
                       </div>
                       <div class="modal-footer">
                         <p></p>
-                        <button type="button" class="btn btn-close" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-orange" role="button" onclick="loadData();" data-dismiss="modal">Load</button>
+                        <button type="button" class="btn btn-close btn-modal" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-orange btn-modal" role="button" onclick="loadData();" data-dismiss="modal">Load</button>
                       </div>
                     </div>
                   </div>
@@ -173,8 +177,8 @@
                           </div>
                           <div class="modal-footer">
                             <p></p>
-                            <button type="button" class="btn btn-close" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-orange" role="button" onclick="storeData();" data-dismiss="modal">Save</button>
+                            <button type="button" class="btn btn-close btn-modal" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-orange btn-modal" role="button" onclick="storeData();" data-dismiss="modal">Save</button>
                           </div>
                         </div>
                       </div>
@@ -185,6 +189,10 @@
 
             </div>
         </div>
+    </section>
+    
+    <section id="alerts">
+
     </section>
 
     <!-- firebase.js -->

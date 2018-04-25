@@ -8,6 +8,8 @@ var keyword; // Word provided by user to identify data.
 var database; // The database we will store and retrieve data. 
 var ref; // The location in the database we will edit. 
 var object; // The database object
+var checkingDbForKeyword; // Boolean to indicate if we are checking the database for a matching passphrase.
+var keywordInDb; // Boolean to notify me if keyword is in Db. 
 
 // Boolean variables used to determine if the calculator should include that denomination. 
 var calchundred;
@@ -22,6 +24,8 @@ function setup() {
     // Initialise variables:
     entries = 1;
     table = document.getElementById("main-table");
+    checkingDbForKeyword = false;
+    keywordInDb = false; 
     
     calchundred = true;
     calctwenty = true;
@@ -70,7 +74,7 @@ function calculateEnvelopes() {
     
         // If budget amount is empty, throw error message and stop calculation: 
         if(budgetAmount === "") {
-            window.alert("Do us a favor, and delete any rows that do not have budget amounts."); 
+            alert("danger","Uh oh! Do us a favor, and delete any rows that do not have budget amounts."); 
             return;
         }
         
@@ -206,7 +210,15 @@ function storeData() {
     var itemsValue; // The budget value of an item. 
 
     // Get keyword: 
-    keyword = document.getElementById("storeKeyword").value;
+    var storeKeyword = document.getElementById("storeKeyword").value;
+    
+    // Check database for matching keyword: 
+    checkingDbForKeyword = true; 
+    keywordInDb = false; 
+    loadData();
+    if (keywordInDb) {
+        return; 
+    }
     
     // Create as array of all budget items: 
     for (var i = 1; i<table.rows.length-1; i++){
@@ -221,23 +233,23 @@ function storeData() {
     
     // Create object to store all data:
     var data = {
-        keyword: keyword,
+        keyword: storeKeyword,
         items: items
     };
     
     // Push data object to console and database: 
     ref.push(data);
-    console.log("We stored that data!");
+    alert("success"," Success! Your data has been saved. Be sure to remember your passphrase for next time: <strong>"+storeKeyword+"</strong>");
 }
 
 function loadData() {
     
     // Look at DB, if data return it, if error return it:
-    ref.on('value', returnData, returnErr);
+    ref.on('value', reviewData, returnErr);
     
 }
 
-function returnData(data) {
+function reviewData(data) {
     
     // Get the data values: 
     var budgetitems = data.val();
@@ -246,32 +258,50 @@ function returnData(data) {
     var keys = Object.keys(budgetitems);
     
     // Get user's passphrase to compare: 
-    keyword = document.getElementById("loadKeyword").value;
+    if(checkingDbForKeyword){
+        keyword = document.getElementById("storeKeyword").value;              
+    }
+    else
+    {
+        keyword = document.getElementById("loadKeyword").value;        
+    }
+
     
     // Check each record for matching keywords:
     for(var i = 0; i < keys.length; i++)
         {
             // Iterate through the keys:
             var k = keys[i]; 
-            
+
             // Grab the keyword cooresponding to each key:
             var storedkeyword = budgetitems[k].keyword;
-            
+
             // If the keyword matches, display that keys data to the user: 
             if (storedkeyword == keyword) {
-                displayData(budgetitems[k].items);
-                return;
+                
+                if(checkingDbForKeyword) {
+                    alert("danger","Warning! Data not saved. This passphrase is already being used to store another record. Please store your data with another passphrase.")
+                    checkingDbForKeyword = false;
+                    keywordInDb = true; 
+                    return;
+                }
+                else {
+                    displayData(budgetitems[k].items);
+                    return;
+                }
             }
         }   
     
-    // Alert no matching data: 
-    window.alert("Unfortunately, we were unable to find any matching passphrases. You are welcome to try another! :)"); 
+    if (!checkingDbForKeyword) {
+        // Alert no matching data: 
+        alert("danger","Unfortunately, we were unable to find any matching passphrases. You are welcome to try another! :)"); 
+    }
 }
 
 function returnErr(err) {
     
     // Alert user there was an error:
-    window.alert("Let the everyenvelope team no you got an error! Send them a screenshot of this: " + err); 
+    alert("danger","Let the everyenvelope team know you got an error! Send them a screenshot of this: " + err); 
 }
 
 function displayData(dataarray) {
@@ -299,6 +329,8 @@ function displayData(dataarray) {
     
     // Go ahead and calculate for the user: 
     calculateEnvelopes();
+    
+    alert("success","Success! Data for <strong>" + keyword + "</strong> has been loaded.");
 }
 
 function flipCalcDenom(id) {
@@ -353,7 +385,7 @@ function flipCalcDenom(id) {
     // If id is onehead:
     else {
         // Alert user that 1's are required:
-        window.alert("Hey friend! Because we want to give you the most accurate numbers, we require that calculating by '$1s' always be turned on."); 
+        alert("primary","Hey friend! Because we want to give you the most accurate numbers, we require that calculating by '$1s' always be turned on."); 
     }    
     
 }
@@ -375,7 +407,20 @@ function makeResponsive(size) {
 
 }
 
-
+function alert(type,message) {
+    
+    // Insert success alert into html: 
+    document.getElementById("alertPlaceholder").innerHTML = '<div id="alert" class="alert alert-'+type+' alert-dismissible fade show" role="alert"> '+message+'<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
+    
+    // If alert has not been 'x'd out, remove alert after 15 seconds:
+    setTimeout(function() { 
+        var alert = document.getElementById("alert");
+        
+        if(alert) {
+            alert.remove();
+        }
+    }, 15000);
+}
 
 
 
