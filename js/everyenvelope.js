@@ -4,12 +4,6 @@
 
 var table; // The table we will manipulate.
 var entries; // Number of rows (budget items) in table.
-var keyword; // Word provided by user to identify data.
-var database; // The database we will store and retrieve data. 
-var ref; // The location in the database we will edit. 
-var object; // The database object
-var checkingDbForKeyword; // Boolean to indicate if we are checking the database for a matching passphrase.
-var keywordInDb; // Boolean to notify me if keyword is in Db. 
 
 // Boolean variables used to determine if the calculator should include that denomination. 
 var calchundred;
@@ -31,22 +25,7 @@ function setup() {
     calctwenty = true;
     calcfive = true;
     calcone = true;
-    
-    // Initialize firebase:
-    var config = {
-        apiKey: "AIzaSyBygY4bRDRXyqmt_VYRW1oT5URThZOfQeU",
-        authDomain: "everyenvelope.firebaseapp.com",
-        databaseURL: "https://everyenvelope.firebaseio.com",
-        projectId: "everyenvelope",
-        storageBucket: "",
-        messagingSenderId: "813966675035"
-    };
-    firebase.initializeApp(config);
-    
-    // Initiaise database and node:
-    database = firebase.database();
-    ref = database.ref('budgetitems');
-    
+     
     // Adjust to responsive design:
     var size = window.matchMedia("(max-width: 767.98px)")
     makeResponsive(size); // Call listener function at run time
@@ -202,137 +181,6 @@ function removeRow(parentid) {
         
 }
 
-function storeData() {
-    
-    // Initialize variables: 
-    var items = []; // An array of budgetNames and Items.
-    var itemsName; // The budget name of an item. 
-    var itemsValue; // The budget value of an item. 
-
-    // Get keyword: 
-    var storeKeyword = document.getElementById("storeKeyword").value;
-    
-    // Check database for matching keyword: 
-    checkingDbForKeyword = true; 
-    keywordInDb = false; 
-    loadData();
-    if (keywordInDb) {
-        return; 
-    }
-    
-    // Create as array of all budget items: 
-    for (var i = 1; i<table.rows.length-1; i++){
-        
-        // Get item names and values: 
-        itemsName = document.getElementById("budgetItem-" + i).value;
-        itemsValue = document.getElementById("budgetAmount-" + i).value;
-        
-        // Append an array of the name and value to the items array: 
-        items.push([itemsName, itemsValue]);       
-    };
-    
-    // Create object to store all data:
-    var data = {
-        keyword: storeKeyword,
-        items: items
-    };
-    
-    // Push data object to console and database: 
-    ref.push(data);
-    alert("success"," Success! Your data has been saved. Be sure to remember your passphrase for next time: <strong>"+storeKeyword+"</strong>");
-}
-
-function loadData() {
-    
-    // Look at DB, if data return it, if error return it:
-    ref.on('value', reviewData, returnErr);
-    
-}
-
-function reviewData(data) {
-    
-    // Get the data values: 
-    var budgetitems = data.val();
-    
-    // Grab the list of keys for each record:
-    var keys = Object.keys(budgetitems);
-    
-    // Get user's passphrase to compare: 
-    if(checkingDbForKeyword){
-        keyword = document.getElementById("storeKeyword").value;              
-    }
-    else
-    {
-        keyword = document.getElementById("loadKeyword").value;        
-    }
-
-    
-    // Check each record for matching keywords:
-    for(var i = 0; i < keys.length; i++)
-        {
-            // Iterate through the keys:
-            var k = keys[i]; 
-
-            // Grab the keyword cooresponding to each key:
-            var storedkeyword = budgetitems[k].keyword;
-
-            // If the keyword matches, display that keys data to the user: 
-            if (storedkeyword == keyword) {
-                
-                if(checkingDbForKeyword) {
-                    alert("danger","Warning! Data not saved. This passphrase is already being used to store another record. Please store your data with another passphrase.")
-                    checkingDbForKeyword = false;
-                    keywordInDb = true; 
-                    return;
-                }
-                else {
-                    displayData(budgetitems[k].items);
-                    return;
-                }
-            }
-        }   
-    
-    if (!checkingDbForKeyword) {
-        // Alert no matching data: 
-        alert("danger","Unfortunately, we were unable to find any matching passphrases. You are welcome to try another! :)"); 
-    }
-}
-
-function returnErr(err) {
-    
-    // Alert user there was an error:
-    alert("danger","Let the everyenvelope team know you got an error! Send them a screenshot of this: " + err); 
-}
-
-function displayData(dataarray) {
-    
-    // Grab current number of rows: 
-    var curNumOfRows = entries; 
-    
-    // Delete all current rows
-    for(var i = curNumOfRows; i > 0; i--) {
-        console.log(curNumOfRows, entries, i, "row removed");
-        removeRow("id-"+i);
-    }
-    
-    // Add rows to show the show the data in the UI: 
-    for(var i = 0; i < dataarray.length; i++){
-        addAnotherRow();
-    }
-    
-    // Populate each of the elements with data: 
-    for(var i = 0; i < dataarray.length; i++){
-        console.log(dataarray[i]);
-        document.getElementById("budgetItem-" + (i+1)).value = dataarray[i][0];
-        document.getElementById("budgetAmount-" + (i+1)).value = dataarray[i][1];
-    }
-    
-    // Go ahead and calculate for the user: 
-    calculateEnvelopes();
-    
-    alert("success","Success! Data for <strong>" + keyword + "</strong> has been loaded.");
-}
-
 function flipCalcDenom(id) {
     
     var calcElement = document.getElementById(id);
@@ -421,6 +269,12 @@ function alert(type,message) {
         }
     }, 15000);
 }
+
+
+
+
+
+
 
 
 
