@@ -33,8 +33,11 @@ btnSignUp.addEventListener('click', e => {
 });
 
 btnLogout.addEventListener('click', e => {
-    const promise = firebase.auth().signOut();
-    promise.catch(e => console.log(e.message));
+    firebase.auth().signOut().then(function() {
+        console.log('Signed Out');
+    }, function(error) {
+        console.error('Sign Out Error', error);
+    });
     alert("warning", "You have logged out. Come back and see us!");
 });
 
@@ -42,14 +45,14 @@ btnLogout.addEventListener('click', e => {
 firebase.auth().onAuthStateChanged(firebaseUser => {
     if(firebaseUser) {
         // console.log(firebaseUser);
-        btnLogout.classList.remove('d-none');
-        btnLoginModal.classList.add('d-none');
+//        btnLogout.classList.remove('d-none');
+//        btnLoginModal.classList.add('d-none');
         // TODO: Display user's email outside of alert.  
         alert("primary", "Welcome " + firebase.auth().currentUser.email + "!");
     }
     else {
         console.log("Not Logged In");
-        btnLoginModal.classList.remove('d-none');
-        btnLogout.classList.add('d-none');
+//        btnLoginModal.classList.remove('d-none');
+//        btnLogout.classList.add('d-none');
     }
 });
